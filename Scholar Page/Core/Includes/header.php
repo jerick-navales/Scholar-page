@@ -28,7 +28,19 @@ include("../../../Database/database.php");
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <style>
+        body{
+            font-family: "Josefin Sans", sans-serif;
+            background: linear-gradient(-135deg, #006666 0%, #009999 30%, #66cccc 100%);
+
+        }
         .notification-container {
             display: none;
             position: fixed;

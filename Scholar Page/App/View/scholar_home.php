@@ -37,9 +37,6 @@ include('../../Core/Includes/header.php');
 ?>
 
 <style>
-    body {
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
-    }
     .custom-list-group-item {
         display: flex;
         justify-content: space-between;
@@ -59,8 +56,8 @@ include('../../Core/Includes/header.php');
             <div class="col-md-4">
                 <div class="dashboard-card" style="background-color: #f0f9f9;">
                     <div class="icon-section-title">
-                        <i class="lni lni-graduation"></i>
-                        <span style="font-weight: 700; font-size: 25px;">Good Day, <?php echo $firstName; ?>!</span>
+                        <i style="font-weight: bold;" class="lni lni-graduation"></i>
+                        <span style="font-weight: 700; font-size: 25px; font-family: 'Josefin Sans', sans-serif;">Good Day, <?php echo $firstName; ?>!</span>
                     </div>
                     <span style="padding-left: 2.3rem; font-weight: 600; font-size: 16px;">Welcome Back!</span>
                 </div>
@@ -169,20 +166,78 @@ include('../../Core/Includes/header.php');
             </div>
         </div>
 
+        <?php
+        // Requirements and their corresponding tables
+        $requirements = [
+            "scholar_narrative_reports" => "Narrative Reports",
+            "scholar_load_expenses" => "Load Expenses",
+            "scholar_book_expenses" => "Book Expenses",
+            "scholar_thesis_expenses" => "Thesis Expenses",
+            "scholar_certificate_of_registration" => "Certificate of Registration",
+            "scholar_certificate_of_grade" => "Certificate of Grade"
+        ];
+
+        // Get current month as a full name (e.g., "November")
+        $currentMonth = date('F');
+
+        // Function to check if there's data for the current month
+        function hasDataForCurrentMonth($tableName, $connection, $currentMonth) {
+            // Prepare SQL query to check if there's a record in the current month
+            $query = "SELECT COUNT(*) as count FROM $tableName WHERE report_month = ?";
+            
+            // Debugging: Print query and current month (can be removed later)
+            echo "<!-- Query: $query, Current Month: $currentMonth -->";
+            
+            $stmt = $connection->prepare($query);
+            $stmt->bind_param("s", $currentMonth);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+
+            // Debugging: Show result count (can be removed later)
+            echo "<!-- Result Count for $tableName: {$result['count']} -->";
+
+            return $result['count'] > 0;
+        }
+
+        // Function to determine if the month has changed
+        function hasMonthChanged($previousMonth) {
+            return date('F') !== $previousMonth;
+        }
+
+        // Store the last month checked (you could store this in a session or database)
+        $previousMonth = $_SESSION['last_checked_month'] ?? date('F');
+
+        // Check if the month has changed
+        if (hasMonthChanged($previousMonth)) {
+            // Reset the last checked month
+            $_SESSION['last_checked_month'] = date('F');
+        }
+
+        ?>
+
         <div class="col-md-12 shadow rounded p-4 mb-4" style="background-color: #f0f9f9;">
             <div class="dashboard-card">
-                <h5 class="section-title">Incomplete Requirements Tracker</h5>
+                <h5 class="section-title">Requirements Tracker</h5>
                 <ul class="list-group">
-                    <li class="list-group-item custom-list-group-item">Narrative Reports<i class="fas fa-check-circle"></i></li>
-                    <li class="list-group-item custom-list-group-item">Load Expenses<i class="fas fa-times-circle"></i></li>
-                    <li class="list-group-item custom-list-group-item">Book Expenses<i class="fas fa-check-circle"></i></li>
-                    <li class="list-group-item custom-list-group-item">Thesis Expensis<i class="fas fa-check-circle"></i></li>
-                    <li class="list-group-item custom-list-group-item">Certificate of Registration<i class="fas fa-times-circle"></i></li>
-                    <li class="list-group-item custom-list-group-item">Certificate of Grade<i class="fas fa-check-circle"></i></li>
+                    <?php foreach ($requirements as $tableName => $label): ?>
+                        <?php
+                        // Check if data exists for the current month for this requirement
+                        $hasData = hasDataForCurrentMonth($tableName, $connection, $currentMonth);
+                        ?>
+
+                        <li class="list-group-item custom-list-group-item">
+                            <?php echo $label; ?>
+                            <?php if ($hasData): ?>
+                                <i class="fas fa-check-circle" style="color: #003c3c;"></i>
+                            <?php else: ?>
+                                <i class="fas fa-times-circle" style="color: #6A1E54;"></i>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
-
 
         <div class="col-md-12 shadow rounded p-4 mb-4" style="background-color: #f0f9f9;">
             <h5 class="text-center" style="color: #003c3c; font-weight: bold; letter-spacing: 1px;">User Activity Over Time</h5>
@@ -204,21 +259,19 @@ include('../../Core/Includes/header.php');
             <p class="mb-2">Contact Us: <a href="mailto:mfi@sedp.ph " class="text-light">simbag_sedp@yahoo.com</a></p>
 
             <div class="social-media-links mb-2">
-                <a href="https://web.facebook.com/sedp.ph" target="_blank" class="mx-2 text-light"><i class="fa fa-facebook"></i></a>
-                <a href="https://twitter.com/yourprofile" class="mx-2 text-light"><i class="fa fa-twitter"></i></a>
-                <a href="https://linkedin.com/in/yourprofile" class="mx-2 text-light"><i class="fa fa-linkedin"></i></a>
+                <a href="https://web.facebook.com/sedp.ph" target="_blank" class="mx-2 text-light"><i class="bi bi-facebook"></i></a>
+                <a href="https://twitter.com/yourprofile" class="mx-2 text-light"><i class="bi bi-twitter"></i></a>
+                <a href="https://linkedin.com/in/yourprofile" class="mx-2 text-light"><i class="bi bi-linkedin"></i></a>
             </div>
         </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.6/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../Public/Assets/Js/lineGraph.js"></script>
     <script src="../../Public/Assets/Js/calendar.js"></script>
-
-    </script>
 </body>
 
 </html>

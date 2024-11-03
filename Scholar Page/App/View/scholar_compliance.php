@@ -3,14 +3,14 @@ $title = 'Scholar Compliance | SEDP HRMS';
 $page = 'compliance';
 include('../../Core/Includes/header.php');
 ?>
-<div class="main-container p-4" style="background: linear-gradient(135deg, #e0f7fa, #ffffff); border-radius: 10px;">
+<div class="main-container p-4">
 
     <div class="container" style="margin-top: 4rem;">
-        <!-- Title Section with #003c3c Color -->
-        <div class="d-flex align-items-center mb-5" style="font-size: 24px; color: #003c3c; font-weight: bold;">
+        <!-- <div class="d-flex align-items-center mb-5" style="font-size: 24px; color: #003c3c; font-weight: bold;">
             <i class="fa-solid fa-angle-left me-3"></i>
             <span> <a style="color: #003c3c; text-decoration: none;" href="scholar_home.php"> Requirements Compliance</a></span>
-        </div>
+        </div> -->
+        
 
         <!-- Compliance Cards with Bigger Folder Icons -->
         <div class="row g-4">
@@ -23,7 +23,7 @@ include('../../Core/Includes/header.php');
                         </div>
                         <div>
                             <a href="narrative_report_month.php" style="text-decoration: none;">
-                                <h5 style="color: #003c3c;">Narrative Reports</h5>
+                                <h5 style="color: #003c3c; font-weight: 700;">Narrative Reports</h5>
                             </a>
                             <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">50% submitted</p>

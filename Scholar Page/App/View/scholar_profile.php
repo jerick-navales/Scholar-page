@@ -4,50 +4,8 @@ $page = 'scholar profile';
 include('../../Core/Includes/header.php');
 include('../../../Database/db.php');
 
-
-// Only execute PHP code if the request is an AJAX POST request
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['currentPassword'], $_POST['newPassword'])) {
-    require '../../../Database/db.php'; // Ensure this path is correct for the database file
-
-    $username = $_POST['username'];
-    $currentPassword = $_POST['currentPassword'];
-    $newPassword = $_POST['newPassword'];
-
-    try {
-        // Check if the database connection is valid
-        if (!$pdo) {
-            throw new Exception("Database connection not established.");
-        }
-
-        // Prepare statement to find the user
-        $stmt = $pdo->prepare("SELECT * FROM scholar_login WHERE username = :username");
-        $stmt->execute(['username' => $username]);
-        $user = $stmt->fetch();
-
-        // Check if user exists and password matches
-        if (!$user || !password_verify($currentPassword, $user['password'])) {
-            echo json_encode(['success' => false, 'message' => 'Invalid username or current password.']);
-            exit;
-        }
-
-        // Update password
-        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare("UPDATE scholar_login SET password = :newPassword WHERE username = :username");
-        $stmt->execute(['newPassword' => $newPasswordHash, 'username' => $username]);
-
-        echo json_encode(['success' => true, 'message' => 'Password successfully updated.']);
-    } catch (Exception $e) {
-        // Send detailed error information back for debugging
-        echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
-    }
-    exit;
-}
-
 ?>
 <style>
-    body {
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
-    }
     .input-with-icon {
             position: relative;
         }
@@ -62,6 +20,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['cu
             cursor: pointer;
             color: #6c757d;
         }
+        .option-btn {
+        position: relative;
+        text-decoration: none;
+        padding: 0;
+        margin: 0 15px;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .option-btn::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        height: 3px;
+        border-radius: 3px;
+        width: 100%;
+        background: linear-gradient(90deg, #003c3c, #026f6f);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .option-btn:hover::after {
+        transform: scaleX(1);
+    }
+
+    .content-item {
+        display: none;
+    }
+
+    .content-item.active {
+        display: block;
+    }
+
+    .editable {
+        cursor: pointer;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.5rem .75rem;
+    }
 </style>
 <div class="main-container shadow-sm p-4 bg-white rounded shadow-lg" style="margin: 5.5rem 7% 0;">
     <div class="row justify-content-center">
@@ -216,52 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['cu
     </div>
 </div>
 </div>
-<style>
-    .option-btn {
-        position: relative;
-        text-decoration: none;
-        padding: 0;
-        margin: 0 15px;
-        font-family: 'Arial', sans-serif;
-        color: #333;
-        font-weight: bold;
-    }
 
-    .option-btn::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -5px;
-        height: 3px;
-        border-radius: 3px;
-        width: 100%;
-        background: linear-gradient(90deg, #003c3c, #026f6f);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-    }
-
-    .option-btn:hover::after {
-        transform: scaleX(1);
-    }
-
-    .content-item {
-        display: none;
-    }
-
-    .content-item.active {
-        display: block;
-    }
-
-    .editable {
-        cursor: pointer;
-    }
-
-    .form-control {
-        display: block;
-        width: 100%;
-        padding: 0.5rem .75rem;
-    }
-</style>
 <script>
     function changeContent(content) {
         document.querySelectorAll('.content-item').forEach(item => {
@@ -301,69 +258,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'], $_POST['cu
             editableField.textContent = input.value;
         });
     }
-</script>
-
-<script>
-function changePassword() {
-    const username = document.getElementById('username').value;
-    const currentPassword = document.getElementById('currentPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (newPassword !== confirmPassword) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'New password and confirm password do not match!',
-        });
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('currentPassword', currentPassword);
-    formData.append('newPassword', newPassword);
-
-    fetch('change_password.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Password Changed',
-                text: data.message,
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.message,
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An unexpected error occurred.',
-        });
-    });
-}
-
-function togglePasswordVisibility(fieldId, icon) {
-    const field = document.getElementById(fieldId);
-    if (field.type === 'password') {
-        field.type = 'text';
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-    } else {
-        field.type = 'password';
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-}
 </script>
 
 <?php

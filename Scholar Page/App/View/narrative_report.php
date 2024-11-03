@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     icon: 'success',
                     title: 'Success',
                     text: 'Narrative report submitted successfully!',
-                    confirmButtonColor: '#003c3c'
+                    confirmButtonColor: '#003c3c',
+                    background: '#003c3c',
+                    color: '#fff'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = 'narrative_report.php';
@@ -91,7 +93,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 <style>
     html, body {
         overflow-x: hidden;
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
     }
 
     #reportTitle::placeholder, #reportContent::placeholder {
@@ -112,7 +113,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     }
 
     .month-card.selected {
-        background-color: #003c3c;
+        background: linear-gradient(125deg, #00b5b5 5%, #00a6a6 15%, #008080 25%, #007373 50%, #003c3c 100%);
         color: #fff;
     }
 
@@ -126,7 +127,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 <div class="container-fluid mx-2 bg-transparent" style="margin-top: 5.5rem;">
     <div class="row">
         <div class="col-md-4" style="max-height: 600px; overflow-y: auto; -ms-overflow-style: none; scrollbar-width: none; border-radius: 12px;">
-            <div class="row">
+            <div class="row" id="monthCardsContainer">
                 <?php 
                 $months = [
                     'January', 'February', 'March', 'April', 'May', 
@@ -138,19 +139,22 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $lowercaseMonth = strtolower($month);
                     $isSelected = ($lowercaseMonth === $selectedMonth) ? 'selected' : '';
                     
+                    // Check status for each month
                     $status = in_array($lowercaseMonth, $submittedReports) ? 'Submitted' : 'Pending';
 
                     echo '
-                    <div class="col-12 mb-4">
-                        <div id="month-' . $lowercaseMonth . '" class="card border-0 h-100 month-card ' . $isSelected . '" style="border-radius: 12px;">
+                    <div class="col-12 mb-4" id="month-' . $lowercaseMonth . '">
+                        <div class="card border-0 h-100 month-card ' . $isSelected . '" data-month="' . $month . '" style="border-radius: 12px;">
                             <div class="card-body d-flex shadow-sm py-1 px-1" style="border-radius: 12px; border: 1px solid #003c3c;">
-                                <div class="col-5 d-flex justify-content-center align-items-center" style="padding-right: 10px; width: 40%; ">
-                                    <img src="../../Public/Assets/Images/narrative_report_month.png" alt="' . $month . '" style="width: 100%; height: 100%;border-radius: 12px 5px 5px 12px;">
+                                <div class="col-5 d-flex justify-content-center align-items-center" style="padding-right: 10px; width: 40%;">
+                                    <img src="../../Public/Assets/Gif/' . $lowercaseMonth . '.gif" alt="' . $month . '" style="width: 100%; height: 100%; border-radius: 12px 5px 5px 12px;">
                                 </div>
-                                <div class="col-7 pb-2" style="width: 60%;">
-                                    <h5 class="card-title text-uppercase" style="font-weight: 600; letter-spacing: 0.5px; font-size: 1.7rem;">' . $month . '</h5>
-                                    <p class="card-text fs-normal" style="font-size: 0.80rem; color: gray;">Click below to view or submit files.</p>
-                                    <span class="status float-center " style="margin-bottom: 5px;font-size: 0.9rem; font-weight: 600; padding: 10px 34%;color: ' . ($status === 'Submitted' ? 'green' : 'red') . '; border-radius: 5px; background-color: ' . ($status === 'Submitted' ? '#d4edda' : '#f8d7da') . ';">' . $status . '</span>
+                                <div class="col-7 d-flex flex-column justify-content-between" style="width: 60%;">
+                                    <div>
+                                        <h5 class="card-title text-uppercase" style="font-weight: 600; letter-spacing: 0.5px; font-size: 1.7rem;">' . $month . '</h5>
+                                        <p class="card-text fs-normal" style="font-size: 0.80rem; color: gray;">Click below to view or submit files.</p>
+                                    </div>
+                                    <span class="status mt-auto" style="font-size: 0.9rem; font-weight: 600; padding: 10px 34%; color: ' . ($status === 'Submitted' ? 'green' : 'red') . '; border-radius: 5px 5px 12px 5px; background-color: ' . ($status === 'Submitted' ? '#d4edda' : '#f8d7da') . ';">' . $status . '</span>
                                 </div>
                             </div>
                         </div>
@@ -160,10 +164,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             </div>
         </div>
 
+
         <div class="col-md-8">
-            <div class="container shadow-lg rounded-4 pb-5" style="padding: 1rem 4rem 0; background-color: #003c3c; height: 95%;">
+            <div class="container shadow-lg rounded-4 pb-5" style="padding: 1rem 4rem 0; background: linear-gradient(125deg, #003c3c 0%, #004949 15%, #005555 30%, #007373 45%, #008080 60%, #00a6a6 80%, #00b5b5 100%); height: 95%;">
                 <h3 class="fw-bold fs-1 text-center mb-2 text-white">Narrative Report</h3>
-                
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="mb-2">
                         <label for="reportTitle" class="form-label text-white">Report Title</label>
@@ -173,7 +177,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                     <div class="mb-2">
                         <label for="submissionDate" class="form-label text-white">Submission Date</label>
-                        <input type="date" class="form-control shadow-sm border-0 text-dark bg-white"  id="submissionDate" name="submissionDate" required>
+                        <input type="date" class="form-control shadow-sm border-0 text-dark bg-white" id="submissionDate" name="submissionDate" required>
                     </div>
 
                     <div class="mb-2">
@@ -219,19 +223,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     monthCards.forEach(function(card) {
         card.addEventListener('click', function() {
+            // Remove 'selected' class from all month cards
             monthCards.forEach(c => c.classList.remove('selected'));
+            // Add 'selected' class to the clicked card
             this.classList.add('selected');
 
+            // Get the month title from the card
             const monthTitle = this.querySelector('.card-title').textContent.trim().toLowerCase();
             const monthNumber = monthToNumber[monthTitle];
 
             if (monthNumber) {
+                // Set the date in the submissionDate input
                 const currentYear = new Date().getFullYear();
                 submissionDateInput.value = `${currentYear}-${monthNumber.toString().padStart(2, '0')}-01`;
             }
+
+            // Smooth scroll the selected card to the top of the container
+            this.closest('.col-12').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
     });
 });
+
 </script>
 
 

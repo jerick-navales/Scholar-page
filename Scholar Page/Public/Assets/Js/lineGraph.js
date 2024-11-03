@@ -1,24 +1,27 @@
-var ctx = document.getElementById('userActivityChart').getContext('2d');
+    var ctx = document.getElementById('userActivityChart').getContext('2d');
     var gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(0, 60, 60, 0.5)');
     gradient.addColorStop(1, 'rgba(0, 60, 60, 0.1)');
 
+    // Sample data for active user days over the months
+    var userActivityData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Active User Days',
+            data: [5, 10, 15, 20, 25, 30, 28, 22, 18, 15, 12, 20], 
+            backgroundColor: gradient,
+            borderColor: '#003c3c',
+            borderWidth: 3,
+            pointBackgroundColor: '#003c3c',
+            pointRadius: 4,
+            fill: true,
+            tension: 0.4
+        }]
+    };
+
     var userActivityChart = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Active Users',
-                data: [12, 19, 3, 5, 2, 3, 18, 12, 22, 9, 15, 25],
-                backgroundColor: gradient,
-                borderColor: '#003c3c',
-                borderWidth: 3,
-                pointBackgroundColor: '#003c3c',
-                pointRadius: 4,
-                fill: true,
-                tension: 0.4
-            }]
-        },
+        data: userActivityData,
         options: {
             responsive: true,
             scales: {
@@ -39,7 +42,7 @@ var ctx = document.getElementById('userActivityChart').getContext('2d');
                 y: {
                     title: {
                         display: true,
-                        text: 'Active Users',
+                        text: 'Active User Days',
                         color: '#003c3c',
                         font: {
                             size: 14,
@@ -75,6 +78,14 @@ var ctx = document.getElementById('userActivityChart').getContext('2d');
                     },
                     bodyFont: {
                         size: 12
+                    },
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw + ' days active';
+                        },
+                        title: function(tooltipItem) {
+                            return 'Month: ' + tooltipItem[0].label;
+                        }
                     }
                 }
             }

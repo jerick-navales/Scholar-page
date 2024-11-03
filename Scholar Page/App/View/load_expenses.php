@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     confirmButtonColor: '#003c3c'
                 });
             </script>";
-            exit; // Stop execution if file upload fails
+            exit;
         }
     }
 
@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     icon: 'success',
                     title: 'Success',
                     text: 'Load Expenses submitted successfully!',
-                    confirmButtonColor: '#003c3c'
+                    confirmButtonColor: '#003c3c',
+                    background: '#003c3c',
+                    color: '#fff'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = 'load_expenses.php';
@@ -72,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     title: 'Submission Failed',
                     text: 'Failed to submit the report.',
                     confirmButtonColor: '#003c3c'
+                    background: '#003c3c'
                 });
             </script>";
         }
@@ -120,7 +123,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     .month-card.selected .card-text {
         color: #fff;
     }
-
 </style>
 
 <div class="container-fluid mx-2 bg-transparent" style="margin-top: 5.5rem;">
