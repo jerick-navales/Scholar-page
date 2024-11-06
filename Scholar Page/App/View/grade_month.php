@@ -7,7 +7,6 @@ $page = 'Scholar Certificate of Grade';
 include('../../Core/Includes/header.php');
 include('../../../Database/db.php');
 
-
 if (!$connection) {
     die("Database connection failed: " . mysqli_connect_error());
 }
@@ -30,10 +29,21 @@ if ($result->num_rows > 0) {
 } else {
     echo "No data found";
 }
+
+// Check if today's date is January 1st
+if (date('m-d') == '01-01') {
+    $resetQuery = "UPDATE scholar_certificate_of_grade SET report_status = 'Not Submitted'";
+    
+    if ($connection->query($resetQuery) === TRUE) {
+        echo "Report statuses reset successfully.";
+    } else {
+        echo "Error resetting report statuses: " . $connection->error;
+    }
+}
 ?>
 
 <div class="container-fluid" style="margin-top: 5.5rem;">
-    <h1 class="text-center text-uppercase" style="color: #003c3c; font-weight: 700; letter-spacing: 1px; font-size: 2.5rem;"><?php echo $page; ?></h1>
+    <h1 class="text-center text-uppercase text-dark" style="color: #003c3c; font-weight: 700; letter-spacing: 1px; font-size: 2.5rem;"><?php echo $page; ?></h1>
     <div class="row mt-5">
         <?php 
         // List of months for which reports can be submitted
@@ -50,11 +60,11 @@ if ($result->num_rows > 0) {
             $status = $statusData[$monthKey] ?? 'Not Submitted'; 
 
             echo '
-            <div class="col-md-4 mb-4 ">
+            <div class="col-md-4 mb-4">
                 <div class="card shadow-lg border-0 h-100" style="transition: transform 0.3s ease; border-radius: 12px;">
                     <div class="card-body d-flex py-2 shadow-sm" style="border-radius: 10px;">
                         <div class="col-5 d-flex justify-content-center align-items-center" style="padding-right: 10px; width: 40%;">
-                            <img src="../../Public/Assets/Images/narrative_report_month.png" alt="' . $month . '" style="width: 100%;">
+                            <img src="../../Public/Assets/Gif/' . $monthKey . '.gif" alt="' . $month . '" style="width: 100%; border-radius: 8px;">
                         </div>
                         <div class="col-7" style="width: 60%;">
                             <h5 class="card-title text-uppercase" style="color: #003c3c; font-weight: 600; letter-spacing: 0.5px; font-size: 1.7rem;">' . $month . '</h5>

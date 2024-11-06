@@ -88,41 +88,11 @@ $stmt = $pdo->query("SELECT report_month FROM scholar_narrative_reports");
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $submittedReports[] = strtolower($row['report_month']);
 }
+
 ?>
 
-<style>
-    html, body {
-        overflow-x: hidden;
-    }
 
-    #reportTitle::placeholder, #reportContent::placeholder {
-        color: #000;
-    }
-
-    .month-card {
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .month-card .card-text {
-        color: #6c757d;
-    }
-
-    .month-card .btn {
-        background-color: #003c3c;
-        color: #fff;
-    }
-
-    .month-card.selected {
-        background: linear-gradient(125deg, #00b5b5 5%, #00a6a6 15%, #008080 25%, #007373 50%, #003c3c 100%);
-        color: #fff;
-    }
-
-    .month-card.selected .card-title,
-    .month-card.selected .card-text {
-        color: #fff;
-    }
-
-</style>
+<?php include('../../Core/Includes/monthCardStyles.php'); ?>
 
 <div class="container-fluid mx-2 bg-transparent" style="margin-top: 5.5rem;">
     <div class="row">
@@ -201,53 +171,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const monthCards = document.querySelectorAll('.month-card');
-    const submissionDateInput = document.getElementById('submissionDate');
-
-    const monthToNumber = {
-        'january': 1,
-        'february': 2,
-        'march': 3,
-        'april': 4,
-        'may': 5,
-        'june': 6,
-        'july': 7,
-        'august': 8,
-        'september': 9,
-        'october': 10,
-        'november': 11,
-        'december': 12
-    };
-
-    monthCards.forEach(function(card) {
-        card.addEventListener('click', function() {
-            // Remove 'selected' class from all month cards
-            monthCards.forEach(c => c.classList.remove('selected'));
-            // Add 'selected' class to the clicked card
-            this.classList.add('selected');
-
-            // Get the month title from the card
-            const monthTitle = this.querySelector('.card-title').textContent.trim().toLowerCase();
-            const monthNumber = monthToNumber[monthTitle];
-
-            if (monthNumber) {
-                // Set the date in the submissionDate input
-                const currentYear = new Date().getFullYear();
-                submissionDateInput.value = `${currentYear}-${monthNumber.toString().padStart(2, '0')}-01`;
-            }
-
-            // Smooth scroll the selected card to the top of the container
-            this.closest('.col-12').scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        });
-    });
-});
-
-</script>
-
+<script src="../../Public/Assets/Js/monthSelection.js"></script>
 
 <?php include('../../Core/Includes/footer.php'); ?>

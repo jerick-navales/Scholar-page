@@ -6,14 +6,7 @@ include('../../Core/Includes/header.php');
 <div class="main-container p-4">
 
     <div class="container" style="margin-top: 4rem;">
-        <!-- <div class="d-flex align-items-center mb-5" style="font-size: 24px; color: #003c3c; font-weight: bold;">
-            <i class="fa-solid fa-angle-left me-3"></i>
-            <span> <a style="color: #003c3c; text-decoration: none;" href="scholar_home.php"> Requirements Compliance</a></span>
-        </div> -->
-        
-
-        <!-- Compliance Cards with Bigger Folder Icons -->
-        <div class="row g-4">
+            <div class="row g-4">
             <!-- Card 1 -->
             <div class="col-md-6">
                 <div class="compliance-card p-5 shadow-sm bg-white rounded position-relative" style="transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 6px solid #00bfa5; background: #f8f9fa; border-radius: 15px;">
@@ -25,7 +18,7 @@ include('../../Core/Includes/header.php');
                             <a href="narrative_report_month.php" style="text-decoration: none;">
                                 <h5 style="color: #003c3c; font-weight: 700;">Narrative Reports</h5>
                             </a>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">50% submitted</p>
                         </div>
                     </div>
@@ -46,7 +39,7 @@ include('../../Core/Includes/header.php');
                             <a href="load_expenses_month.php" style="text-decoration: none;">
                                 <h5 style="color: #003c3c;">Load Expenses</h5>
                             </a>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">25% submitted</p>
                         </div>
                     </div>
@@ -61,13 +54,13 @@ include('../../Core/Includes/header.php');
                 <div class="compliance-card p-5 shadow-sm bg-white rounded position-relative" style="transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 6px solid #00907f; background: #f8f9fa; border-radius: 15px;">
                     <div class="d-flex align-items-center">
                         <div class="icon-container text-center me-4">
-                            <a href="book_expenses.php"><img src="../../Public/Assets/Images/book_expenses.png" alt="Books Expenses Folder" style="height: 110px;"></a>
+                            <a href="book_expenses_month.php"><img src="../../Public/Assets/Images/book_expenses.png" alt="Books Expenses Folder" style="height: 110px;"></a>
                         </div>
                         <div>
-                            <a href="book_expenses.php" style="text-decoration: none;">
+                            <a href="book_expenses_month.php" style="text-decoration: none;">
                                 <h5 style="color: #003c3c;">Book Expenses</h5>
                             </a>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">25% submitted</p>
                         </div>
                     </div>
@@ -82,11 +75,13 @@ include('../../Core/Includes/header.php');
                 <div class="compliance-card p-5 shadow-sm bg-white rounded position-relative" style="transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 6px solid #00796b; background: #f8f9fa; border-radius: 15px;">
                     <div class="d-flex align-items-center">
                         <div class="icon-container text-center me-4">
-                            <a href="thesis_expenses.php"><img src="../../Public/Assets/Images/thesis_expenses.png" alt="Thesis Expenses Folder" style="height: 110px;"></a> <!-- Increased font size -->
+                            <a href="thesis_expenses_month.php"><img src="../../Public/Assets/Images/thesis_expenses.png" alt="Thesis Expenses Folder" style="height: 110px;"></a> <!-- Increased font size -->
                         </div>
                         <div>
-                            <h5 style="color: #003c3c;">Thesis Expenses</h5>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <a href="thesis_expenses_month.php" style="text-decoration: none;">
+                                <h5 style="color: #003c3c;">Thesis Expenses</h5>
+                            </a>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">25% submitted</p>
                         </div>
                     </div>
@@ -100,13 +95,13 @@ include('../../Core/Includes/header.php');
                 <div class="compliance-card p-5 shadow-sm bg-white rounded position-relative" style="transition: transform 0.3s ease, box-shadow 0.3s ease; border-left: 6px solid #006257; background: #f8f9fa; border-radius: 15px;">
                     <div class="d-flex align-items-center">
                         <div class="icon-container text-center me-4">
-                            <a href="registration.php"><img src="../../Public/Assets/Images/cert_registration.png" alt="Certificate of Registration Folder" style="height: 110px;"></a>
+                            <a href="registration_month.php"><img src="../../Public/Assets/Images/cert_registration.png" alt="Certificate of Registration Folder" style="height: 110px;"></a>
                         </div>
                         <div>
-                            <a href="registration.php" style="text-decoration: none;">
+                            <a href="registration_month.php" style="text-decoration: none;">
                                 <h5 style="color: #003c3c;">Certificate of Registration</h5>
                             </a>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">25% submitted</p>
                         </div>
                     </div>
@@ -126,7 +121,7 @@ include('../../Core/Includes/header.php');
                             <a href="grade_month.php" style="text-decoration: none;">
                                 <h5 style="color: #003c3c;">Certificate of Grade</h5>
                             </a>
-                            <p class="text-muted mb-1" style="font-size: 14px;">Weekly</p>
+                            <p class="text-muted mb-1" style="font-size: 14px;">Monthly</p>
                             <p class="text-muted mb-0" style="font-size: 14px;">25% submitted</p>
                         </div>
                     </div>

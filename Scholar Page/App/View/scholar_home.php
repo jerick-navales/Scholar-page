@@ -59,15 +59,13 @@ include('../../Core/Includes/header.php');
                         <i style="font-weight: bold;" class="lni lni-graduation"></i>
                         <span style="font-weight: 700; font-size: 25px; font-family: 'Josefin Sans', sans-serif;">Good Day, <?php echo $firstName; ?>!</span>
                     </div>
-                    <span style="padding-left: 2.3rem; font-weight: 600; font-size: 16px;">Welcome Back!</span>
+                    <span style="padding-left: 2.3rem; font-weight: 600; font-size: 16px; font-family: 'Josefin Sans', sans-serif;">Welcome Back!</span>
                 </div>
 
                 <div class="dashboard-card" style="background-color: #f0f9f9;">
-                    <h5 class="section-title">Academic Performance Overview</h5>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
-                    </div>
-                    <p class="mt-2">GPA: 3.8 / 4.0</p>
+                    <h6 style="font-weight: 700;">You can now change your email and and other personal details.</h6>
+                    <p style="font-weigth: 700; font-size: 13px;">If you want to recover your password or receive a personalized notification, change your email address or other personal details.</p>
+                    <a href="scholar_profile.php"><button style="color: #fff; background: #003c3c; border: none; font-size: 13px; font-weight: 700; padding: 10px 25px; border-radius: 5px;">Go to Profile</button></a>
                 </div>
 
                 <div class="dashboard-card" style="background-color: #f0f9f9;">
@@ -77,6 +75,7 @@ include('../../Core/Includes/header.php');
 
             </div>
 
+            <!-- Announcement -->
             <div class="col-md-8">
                 <div class="dashboard-card" style="height: 95%; position: relative; background-color: #f0f9f9;">
                     <div class="custom-card-header bg-white shadow rounded border-dark">
@@ -166,55 +165,8 @@ include('../../Core/Includes/header.php');
             </div>
         </div>
 
-        <?php
-        // Requirements and their corresponding tables
-        $requirements = [
-            "scholar_narrative_reports" => "Narrative Reports",
-            "scholar_load_expenses" => "Load Expenses",
-            "scholar_book_expenses" => "Book Expenses",
-            "scholar_thesis_expenses" => "Thesis Expenses",
-            "scholar_certificate_of_registration" => "Certificate of Registration",
-            "scholar_certificate_of_grade" => "Certificate of Grade"
-        ];
-
-        // Get current month as a full name (e.g., "November")
-        $currentMonth = date('F');
-
-        // Function to check if there's data for the current month
-        function hasDataForCurrentMonth($tableName, $connection, $currentMonth) {
-            // Prepare SQL query to check if there's a record in the current month
-            $query = "SELECT COUNT(*) as count FROM $tableName WHERE report_month = ?";
-            
-            // Debugging: Print query and current month (can be removed later)
-            echo "<!-- Query: $query, Current Month: $currentMonth -->";
-            
-            $stmt = $connection->prepare($query);
-            $stmt->bind_param("s", $currentMonth);
-            $stmt->execute();
-            $result = $stmt->get_result()->fetch_assoc();
-            $stmt->close();
-
-            // Debugging: Show result count (can be removed later)
-            echo "<!-- Result Count for $tableName: {$result['count']} -->";
-
-            return $result['count'] > 0;
-        }
-
-        // Function to determine if the month has changed
-        function hasMonthChanged($previousMonth) {
-            return date('F') !== $previousMonth;
-        }
-
-        // Store the last month checked (you could store this in a session or database)
-        $previousMonth = $_SESSION['last_checked_month'] ?? date('F');
-
-        // Check if the month has changed
-        if (hasMonthChanged($previousMonth)) {
-            // Reset the last checked month
-            $_SESSION['last_checked_month'] = date('F');
-        }
-
-        ?>
+        <!-- Requirements Tracker -->
+        <?php include('../../Core/Includes/requirementTracker.php');?>
 
         <div class="col-md-12 shadow rounded p-4 mb-4" style="background-color: #f0f9f9;">
             <div class="dashboard-card">
@@ -227,7 +179,7 @@ include('../../Core/Includes/header.php');
                         ?>
 
                         <li class="list-group-item custom-list-group-item">
-                            <?php echo $label; ?>
+                            <strong><?php echo $label; ?></strong>
                             <?php if ($hasData): ?>
                                 <i class="fas fa-check-circle" style="color: #003c3c;"></i>
                             <?php else: ?>
@@ -239,30 +191,34 @@ include('../../Core/Includes/header.php');
             </div>
         </div>
 
+        <!-- User Activity Line Graph -->
         <div class="col-md-12 shadow rounded p-4 mb-4" style="background-color: #f0f9f9;">
             <h5 class="text-center" style="color: #003c3c; font-weight: bold; letter-spacing: 1px;">User Activity Over Time</h5>
             <canvas id="userActivityChart"></canvas>
         </div>
 
     </div>
+
+    <!-- Footer  -->
     <div class="container-fluid bg-dark text-center text-light" style="padding: 10px 0;">
         <div class="footer-content" style="min-height: 100px; line-height: 30px;">
-            <p class="mb-2">&copy; 2024 Your Organization. All Rights Reserved.</p>
-
+            
             <ul class="list-inline mb-2">
-                <li class="list-inline-item"><a href="https://sedp.ph/about-us/" class="text-light">About Us</a></li>
-                <li class="list-inline-item"><a href="https://sedp.ph/services/" class="text-light">Services</a></li>
-                <li class="list-inline-item"><a href="/privacy-policy" class="text-light">Privacy Policy</a></li>
-                <li class="list-inline-item"><a href="/terms-of-service" class="text-light">Terms of Service</a></li>
+                <li class="list-inline-item "><a href="https://sedp.ph/about-us/" class="text-light text-decoration-none">About Us</a></li>
+                <li class="list-inline-item"><a href="https://sedp.ph/services/" class="text-light text-decoration-none">Services</a></li>
+                <li class="list-inline-item"><a href="/privacy-policy" class="text-light text-decoration-none">Privacy Policy</a></li>
+                <li class="list-inline-item"><a href="/terms-of-service" class="text-light text-decoration-none">Terms of Service</a></li>
             </ul>
 
-            <p class="mb-2">Contact Us: <a href="mailto:mfi@sedp.ph " class="text-light">simbag_sedp@yahoo.com</a></p>
+            <p class="mb-2">Contact Us: <a href="mailto:mfi@sedp.ph " class="text-light text-decoration-none">simbag_sedp@yahoo.com</a></p>
 
             <div class="social-media-links mb-2">
                 <a href="https://web.facebook.com/sedp.ph" target="_blank" class="mx-2 text-light"><i class="bi bi-facebook"></i></a>
                 <a href="https://twitter.com/yourprofile" class="mx-2 text-light"><i class="bi bi-twitter"></i></a>
                 <a href="https://linkedin.com/in/yourprofile" class="mx-2 text-light"><i class="bi bi-linkedin"></i></a>
             </div>
+
+            <p class="mb-2">&copy; 2024 Your Organization. All Rights Reserved.</p>
         </div>
     </div>
     
